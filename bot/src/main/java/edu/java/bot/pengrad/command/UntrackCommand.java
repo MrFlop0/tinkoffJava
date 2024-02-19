@@ -17,7 +17,10 @@ public class UntrackCommand implements Command {
     }
 
     @Override
-    public boolean supports(Update update) {
+    public boolean isSupported(Update update) {
+        if (update.message().text() == null) {
+            return false;
+        }
         return update.message().text().split(" ")[0].equals(command());
     }
 

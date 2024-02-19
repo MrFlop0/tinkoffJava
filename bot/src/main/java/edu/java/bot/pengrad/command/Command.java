@@ -15,7 +15,10 @@ public interface Command {
 
     SendMessage handle(Update update);
 
-    default boolean supports(Update update) {
+    default boolean isSupported(Update update) {
+        if (update.message().text() == null) {
+            return false;
+        }
         return update.message().text().equals(command());
     }
 

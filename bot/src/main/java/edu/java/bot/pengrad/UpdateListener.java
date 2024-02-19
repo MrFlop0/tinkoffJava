@@ -19,7 +19,7 @@ public class UpdateListener implements UpdatesListener {
     @Override
     public int process(List<Update> list) {
         list.forEach(update -> commands.stream()
-            .filter(command -> command.supports(update))
+            .filter(command -> command.isSupported(update))
             .findFirst()
             .ifPresentOrElse(
                 command -> bot.execute(command.handle(update)),

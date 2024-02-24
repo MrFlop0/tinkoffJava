@@ -6,11 +6,10 @@ import java.util.List;
 
 public class QuestionInfo {
 
-    public QuestionInfo(
-        @JsonProperty("items") List<Item> items,
-        @JsonProperty("has_more") Boolean hasMore
-    ) {
-    }
+    @JsonProperty("items")
+    public List<Item> items;
+    @JsonProperty("has_more")
+    public Boolean hasMore;
 
     public record Item(
         List<String> tags,

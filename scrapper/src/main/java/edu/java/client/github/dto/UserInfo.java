@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 public class UserInfo {
-    @JsonProperty("login")
-    private String login;
     @JsonProperty("id")
-    private Long id;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("followers")
-    private Long numberOfFollowers;
+    public Long id;
+    public Owner owner;
+
     @JsonProperty("created_at")
-    private OffsetDateTime createDate;
+    public OffsetDateTime createDate;
     @JsonProperty("updated_at")
-    private OffsetDateTime lastUpdateDate;
+    public OffsetDateTime updateDate;
+
+    public record Owner(
+        @JsonProperty("login") String login,
+        @JsonProperty("id") Long ownerId
+    ) {
+    }
 
 }

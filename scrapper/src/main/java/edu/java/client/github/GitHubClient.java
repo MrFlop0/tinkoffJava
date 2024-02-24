@@ -12,8 +12,9 @@ import reactor.core.publisher.Mono;
 public class GitHubClient extends BaseClient {
     private final WebClient githubWebClient;
 
-    public Mono<UserInfo> getUserInfo(String username) {
-        return processGetQuery("/users/" + username, UserInfo.class);
+    public Mono<UserInfo> getRepoInfo(String owner, String repo) {
+        String uri = String.format("/repos/%s/%s", owner, repo);
+        return processGetQuery(uri, UserInfo.class);
     }
 
     @Override

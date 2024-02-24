@@ -8,14 +8,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ClientConfig {
 
     @Bean
-    public WebClient githubClient(ApplicationConfig cfg) {
+    public WebClient githubWebClient(ApplicationConfig cfg) {
         return WebClient.builder()
             .baseUrl(cfg.baseGitHubUrl())
             .build();
     }
 
     @Bean
-    public WebClient stackOverflowClient(ApplicationConfig cfg) {
+    public WebClient stackOverflowWebClient(ApplicationConfig cfg) {
         return WebClient.builder()
             .baseUrl(cfg.baseStackOverflowUrl())
             .build();

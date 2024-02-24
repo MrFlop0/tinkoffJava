@@ -10,10 +10,10 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class GitHubClient {
-    private WebClient githubClient;
+    private final WebClient githubWebClient;
 
     public Mono<UserInfo> getUserInfo(String username) {
-        return githubClient.get()
+        return githubWebClient.get()
             .uri("/users/{username}", username)
             .retrieve()
             .onStatus(

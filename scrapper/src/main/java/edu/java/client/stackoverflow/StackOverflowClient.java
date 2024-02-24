@@ -10,10 +10,10 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class StackOverflowClient {
-    private WebClient stackOverflowClient;
+    private final WebClient stackOverflowWebClient;
 
     public Mono<QuestionInfo> getQuestionInfo(Long id) {
-        return stackOverflowClient.get()
+        return stackOverflowWebClient.get()
             .uri("/2.3/questions/{id}?order=desc&sort=activity&site=stackoverflow", id)
             .retrieve()
             .onStatus(

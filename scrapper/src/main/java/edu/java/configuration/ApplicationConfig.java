@@ -3,6 +3,7 @@ package edu.java.configuration;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
@@ -10,11 +11,19 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
-    @NotNull
-    String baseGitHubUrl,
-    @NotNull
-    String baseStackOverflowUrl
-) {
+    Urls urls
+    ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+    }
+
+    public record Urls(
+        @NotNull
+        @DefaultValue("https://api.github.com")
+        String github,
+        @NotNull
+        @DefaultValue("https://api.stackexchange.com/2.3")
+        String stackoverflow
+    ) {
+
     }
 }

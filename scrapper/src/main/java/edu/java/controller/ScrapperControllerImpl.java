@@ -6,8 +6,10 @@ import edu.java.controller.dto.Response.LinkResponse;
 import edu.java.controller.dto.Response.ListLinksResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@RestController
 public class ScrapperControllerImpl implements ScrapperController {
     @Override
     public void register(Long id) {

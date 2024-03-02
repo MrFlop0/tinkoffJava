@@ -1,7 +1,6 @@
 package edu.java.client.bot.dto.Request;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.net.URI;
 import java.util.List;
 

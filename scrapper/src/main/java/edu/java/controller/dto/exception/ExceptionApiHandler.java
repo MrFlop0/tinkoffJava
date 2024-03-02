@@ -1,12 +1,12 @@
 package edu.java.controller.dto.exception;
 
 import edu.java.controller.dto.Response.ApiErrorResponse;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ExceptionApiHandler {

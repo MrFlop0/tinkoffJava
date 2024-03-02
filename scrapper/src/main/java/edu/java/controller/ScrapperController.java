@@ -17,12 +17,12 @@ public interface ScrapperController {
 
     ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") Long chatId);
 
-    ResponseEntity<LinkResponse> addLinks(
+    ResponseEntity<LinkResponse> addLink(
         @RequestHeader("Tg-Chat-Id") Long chatId,
         @RequestBody AddLinkRequest request
     );
 
-    ResponseEntity<LinkResponse> removeLinks(
+    ResponseEntity<LinkResponse> removeLink(
         @RequestHeader("Tg-Chat-Id") Long chatId,
         @RequestBody RemoveLinkRequest request
     );

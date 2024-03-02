@@ -28,13 +28,13 @@ public class ScrapperControllerImpl implements ScrapperController {
     }
 
     @Override
-    public ResponseEntity<LinkResponse> addLinks(Long chatId, AddLinkRequest request) {
+    public ResponseEntity<LinkResponse> addLink(Long chatId, AddLinkRequest request) {
         log.debug("Added link {}\nFor chat id={}", request.link(), chatId);
         return null;
     }
 
     @Override
-    public ResponseEntity<LinkResponse> removeLinks(Long chatId, RemoveLinkRequest request) {
+    public ResponseEntity<LinkResponse> removeLink(Long chatId, RemoveLinkRequest request) {
         log.debug("Removed link {}\nFor chat id={}", request.link(), chatId);
         return null;
     }

@@ -12,7 +12,7 @@ public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
     Urls urls
-    ) {
+) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 
@@ -22,7 +22,11 @@ public record ApplicationConfig(
         String github,
         @NotNull
         @DefaultValue("https://api.stackexchange.com/2.3")
-        String stackoverflow
+        String stackoverflow,
+
+        @NotNull
+        @DefaultValue("https://api.stackexchange.com/2.3")
+        String bot
     ) {
 
     }

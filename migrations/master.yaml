@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - tagDatabase:
+          tag: 1
+  - include:
+      file: chat.sql
+      relativeToChangelogFile: true
+  - include:
+      file: link.sql
+      relativeToChangelogFile: true
+  - include:
+      file: link-chat.sql
+      relativeToChangelogFile: true

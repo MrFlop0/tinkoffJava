@@ -3,8 +3,8 @@
 create table if not exists links_chats
 (
     chat_id bigint,
-    link_id bigint,
-    primary key (chat_id, link_id),
+    link text,
+    primary key (chat_id, link),
     foreign key (chat_id) references chat (chat_id),
-    foreign key (link_id) references link (link_id)
+    foreign key (link) references link (link)
 )

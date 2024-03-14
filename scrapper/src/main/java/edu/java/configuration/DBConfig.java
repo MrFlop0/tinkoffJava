@@ -43,7 +43,8 @@ public class DBConfig {
             new Link(
                 resultSet.getString("link"),
                 resultSet.getInt("type"),
-                timestampToOffsetDate(resultSet.getTimestamp("update_date"))
+                timestampToOffsetDate(resultSet.getTimestamp("update_date")),
+                timestampToOffsetDate(resultSet.getTimestamp("previous_check"))
             );
 
     }
@@ -56,7 +57,8 @@ public class DBConfig {
                 new Link(
                     resultSet.getString("link"),
                     resultSet.getInt("type"),
-                    timestampToOffsetDate(resultSet.getTimestamp("update_date"))
+                    timestampToOffsetDate(resultSet.getTimestamp("update_date")),
+                    timestampToOffsetDate(resultSet.getTimestamp("previous_check"))
                 )
             );
     }

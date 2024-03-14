@@ -41,10 +41,10 @@ public class UpdateListenerTest {
 
     private UpdateListener updateListener;
     private final List<Command> supportedCommands = List.of(
-        new StartCommand(),
-        new ListCommand(),
-        new TrackCommand(),
-        new UntrackCommand()
+        new StartCommand(null),
+        new ListCommand(null),
+        new TrackCommand(null),
+        new UntrackCommand(null)
     );
 
     @BeforeEach
@@ -57,7 +57,7 @@ public class UpdateListenerTest {
     @Test
     public void testStart() {
         successfulCommandTest(
-            Stream.of(new StartCommand()),
+            Stream.of(new StartCommand(null)),
             "/start",
             """
                 Hello! I'm a Link Listener bot.
@@ -99,7 +99,7 @@ public class UpdateListenerTest {
     @Test
     public void testTrack() {
         successfulCommandTest(
-            Stream.of(new TrackCommand()),
+            Stream.of(new TrackCommand(null)),
             "/track link",
             "Track command not supported yet."
         );
@@ -108,7 +108,7 @@ public class UpdateListenerTest {
     @Test
     public  void testUntrack() {
         successfulCommandTest(
-            Stream.of(new UntrackCommand()),
+            Stream.of(new UntrackCommand(null)),
             "/untrack link",
             "Untrack command not supported yet."
         );
@@ -117,7 +117,7 @@ public class UpdateListenerTest {
     @Test
     public void testList() {
         successfulCommandTest(
-            Stream.of(new ListCommand()),
+            Stream.of(new ListCommand(null)),
             "/list",
             "List command not supported yet."
         );
@@ -126,12 +126,12 @@ public class UpdateListenerTest {
     @Test
     public void testInvalidNumberOfArguments() {
         successfulCommandTest(
-            Stream.of(new UntrackCommand()),
+            Stream.of(new UntrackCommand(null)),
             "/untrack",
             "Invalid command. Usage: /untrack <link>"
         );
         successfulCommandTest(
-            Stream.of(new TrackCommand()),
+            Stream.of(new TrackCommand(null)),
             "/track",
             "Invalid command. Usage: /track <link>"
         );

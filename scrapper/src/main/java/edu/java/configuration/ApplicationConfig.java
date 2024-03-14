@@ -25,7 +25,7 @@ public record ApplicationConfig(
         String stackoverflow,
 
         @NotNull
-        @DefaultValue("https://api.stackexchange.com/2.3")
+        @DefaultValue("http://localhost:8090")
         String bot
     ) {
 

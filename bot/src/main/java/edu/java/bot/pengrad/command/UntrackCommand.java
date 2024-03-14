@@ -2,10 +2,16 @@ package edu.java.bot.pengrad.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.httpclient.ScrapperClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
+@RequiredArgsConstructor
 public class UntrackCommand implements Command {
+
+    private final ScrapperClient scrapperClient;
     @Override
     public String command() {
         return "/untrack";
@@ -35,6 +41,11 @@ public class UntrackCommand implements Command {
         if (message.length != 2) {
             return new SendMessage(update.message().chat().id(), "Invalid command. Usage: /untrack <link>");
         }
-        return new SendMessage(update.message().chat().id(), "Untrack command not supported yet.");
+
+        return scrapperClient.removeLink(update.message().chat().id(), message[1])
+            .map(response -> new SendMessage(update.message().chat().id(), "Link " + response.url() + " successfully removed from tracking"))
+            .onErrorResume(error -> Mono.just(new SendMessage(update.message().chat().id(), error.getMessage())))
+            .block();
+        //return new SendMessage(update.message().chat().id(), "Untrack command not supported yet.");
     }
 }

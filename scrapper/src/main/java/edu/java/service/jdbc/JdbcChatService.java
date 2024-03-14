@@ -14,4 +14,9 @@ public class JdbcChatService implements ChatService {
     public void register(long chatId) {
         repository.add(chatId);
     }
+
+    @Override
+    public void unregister(long chatId) {
+        repository.delete(chatId);
+    }
 }

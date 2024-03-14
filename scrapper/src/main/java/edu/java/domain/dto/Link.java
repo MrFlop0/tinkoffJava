@@ -9,4 +9,5 @@ public record Link(
 
         OffsetDateTime previous_check
 ) {
+
 }

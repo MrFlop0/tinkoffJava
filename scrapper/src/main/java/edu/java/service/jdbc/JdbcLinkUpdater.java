@@ -22,9 +22,9 @@ public class JdbcLinkUpdater implements LinkUpdater {
     }
 
     @Override
-    public void refreshUpdateDate(String link, OffsetDateTime time) {
+    public boolean refreshUpdateDate(String link, OffsetDateTime time) {
         var timestamp = Timestamp.valueOf(time.atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
-        linkRepository.refreshUpdateDate(link, timestamp);
+        return linkRepository.refreshUpdateDate(link, timestamp);
     }
 
     @Override

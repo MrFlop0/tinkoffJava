@@ -7,7 +7,7 @@ import java.util.List;
 public interface LinkUpdater {
     void updateCheckDate(String link);
 
-    void refreshUpdateDate(String link, OffsetDateTime time);
+    boolean refreshUpdateDate(String link, OffsetDateTime time);
 
     List<Link> getLinksToCheck();
 }

@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class HttpClientConfig {
 
     @Bean
-    public WebClient scrapperClient(ApplicationConfig cfg) {
+    public WebClient scrapperWebClient(ApplicationConfig cfg) {
         return WebClient.builder()
             .baseUrl(cfg.baseUrls().scrapper())
             .build();

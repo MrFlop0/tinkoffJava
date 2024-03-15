@@ -9,10 +9,12 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+@Component
 @RequiredArgsConstructor
 public class ScrapperClient {
 
@@ -51,11 +53,15 @@ public class ScrapperClient {
     }
 
     public Mono<LinkResponse> removeLink(Long chatId, String request) {
-        return genericLinkOperation(
-            chatId,
-            new RemoveLinkRequest(URI.create(request)),
-            HttpMethod.DELETE
-        );
+        try {
+            return genericLinkOperation(
+                chatId,
+                new RemoveLinkRequest(URI.create(request)),
+                HttpMethod.DELETE
+            );
+        } catch (IllegalArgumentException e) {
+            return Mono.error(new RuntimeException("Invalid link"));
+        }
     }
 
     private Mono<LinkResponse> genericLinkOperation(Long chatId, Object body, HttpMethod method) {
@@ -65,7 +71,7 @@ public class ScrapperClient {
             .bodyValue(body)
             .retrieve()
             .onStatus(
-                HttpStatusCode::is4xxClientError,
+                httpStatusCode -> httpStatusCode.is4xxClientError() || httpStatusCode.is5xxServerError(),
                 this::handleException
             )
             .bodyToMono(LinkResponse.class);
@@ -76,7 +82,7 @@ public class ScrapperClient {
             .uri(TG_URI, id)
             .retrieve()
             .onStatus(
-                HttpStatusCode::is4xxClientError,
+                httpStatusCode -> httpStatusCode.is4xxClientError() || httpStatusCode.is5xxServerError(),
                 this::handleException
             )
             .bodyToMono(Void.class);

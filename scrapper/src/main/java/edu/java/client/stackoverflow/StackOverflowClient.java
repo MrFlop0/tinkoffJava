@@ -13,7 +13,7 @@ public class StackOverflowClient extends BaseClient {
     private final WebClient stackOverflowWebClient;
 
     public Mono<QuestionInfo> getQuestionInfo(Long id) {
-        String uri = String.format("/2.3/questions/%d?order=desc&sort=activity&site=stackoverflow", id);
+        String uri = String.format("/questions/%d?order=desc&sort=activity&site=stackoverflow", id);
         return processGetQuery(uri, QuestionInfo.class);
     }
 

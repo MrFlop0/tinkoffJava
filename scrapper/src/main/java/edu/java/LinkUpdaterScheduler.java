@@ -11,16 +11,16 @@ import edu.java.service.LinkService;
 import edu.java.service.LinkUpdater;
 import edu.java.utils.GithubLinkParser;
 import edu.java.utils.StackoverflowLinkParser;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Slf4j
 @EnableScheduling
@@ -37,8 +37,7 @@ public class LinkUpdaterScheduler {
     @Scheduled(fixedDelayString = "#{@'app-edu.java.configuration.ApplicationConfig'.scheduler.interval}")
     public void update() {
         log.debug("i'm updating ...");
-        linkUpdater.getLinksToCheck().forEach(link ->
-        {
+        linkUpdater.getLinksToCheck().forEach(link -> {
             switch (link.type()) {
                 case 1 -> {
                     Pair<String, String> info = GithubLinkParser.parse(link.link());
@@ -58,6 +57,7 @@ public class LinkUpdaterScheduler {
                         );
                     }
                 }
+                default -> log.error("unsupported link type {}", link.type());
             }
             linkUpdater.updateCheckDate(link.link());
         });

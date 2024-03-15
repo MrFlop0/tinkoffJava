@@ -3,12 +3,12 @@ package edu.java.service.jdbc;
 import edu.java.domain.dto.Link;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.service.LinkUpdater;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

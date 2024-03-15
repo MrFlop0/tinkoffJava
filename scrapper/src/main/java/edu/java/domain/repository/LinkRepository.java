@@ -22,8 +22,8 @@ public class LinkRepository {
 
     public boolean add(String link, int type) {
         String request =
-            "insert into link (link, type, update_date, previous_check) " +
-                "values (?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
+            "insert into link (link, type, update_date, previous_check) "
+                + "values (?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
         return jdbcTemplate.update(request, link, type) != 0;
     }
 
@@ -45,8 +45,8 @@ public class LinkRepository {
     public boolean updateCheckDate(String link, Timestamp time) {
         String request = "update link set previous_check = ? where link = ?";
 
-        var last_check = getLastCheckDate(link);
-        if (last_check != null && time.after(last_check)) {
+        var lastCheck = getLastCheckDate(link);
+        if (lastCheck != null && time.after(lastCheck)) {
             jdbcTemplate.update(request, time, link);
             return true;
         }
@@ -56,8 +56,8 @@ public class LinkRepository {
     public boolean refreshUpdateDate(String link, Timestamp time) {
         String request = "update link set update_date = ? where link = ?";
 
-        var last_update = getUpdatedDate(link);
-        if (last_update != null && time.after(last_update)) {
+        var lastUpdate = getUpdatedDate(link);
+        if (lastUpdate != null && time.after(lastUpdate)) {
             jdbcTemplate.update(request, time, link);
             return true;
         }

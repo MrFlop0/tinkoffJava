@@ -13,6 +13,7 @@ import static java.lang.System.lineSeparator;
 public class ListCommand implements Command {
 
     private final ScrapperClient scrapperClient;
+
     @Override
     public String command() {
         return "/list";

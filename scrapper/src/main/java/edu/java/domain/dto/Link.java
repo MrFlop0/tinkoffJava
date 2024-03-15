@@ -7,7 +7,7 @@ public record Link(
         int type,
         OffsetDateTime updateDate,
 
-        OffsetDateTime previous_check
+        OffsetDateTime previousCheck
 ) {
 
 }

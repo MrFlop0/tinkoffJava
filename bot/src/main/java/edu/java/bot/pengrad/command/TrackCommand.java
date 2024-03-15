@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 public class TrackCommand implements Command {
 
     private final ScrapperClient scrapperClient;
+
     @Override
     public String command() {
         return "/track";
@@ -43,7 +44,11 @@ public class TrackCommand implements Command {
         }
 
         return scrapperClient.addLink(update.message().chat().id(), message[1])
-            .map(response -> new SendMessage(update.message().chat().id(), "Link " + response.url() + " successfully added for tracking"))
+            .map(response -> new SendMessage(
+                    update.message().chat().id(),
+                    "Link " + response.url() + " successfully added for tracking"
+                )
+            )
             .onErrorResume(error -> Mono.just(new SendMessage(update.message().chat().id(), error.getMessage())))
             .block();
         //return new SendMessage(update.message().chat().id(), "Track command not supported yet.");

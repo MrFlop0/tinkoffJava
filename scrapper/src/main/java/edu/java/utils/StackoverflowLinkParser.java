@@ -1,5 +1,9 @@
 package edu.java.utils;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+@SuppressWarnings("MagicNumber")
 public class StackoverflowLinkParser {
 
     public static Long parse(String link) {

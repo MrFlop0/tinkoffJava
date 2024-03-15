@@ -1,6 +1,7 @@
 package edu.java.domain.dto;
 
-public record LinkChat (
+public record LinkChat(
     Chat chat,
     Link link
-) {}
+) {
+}

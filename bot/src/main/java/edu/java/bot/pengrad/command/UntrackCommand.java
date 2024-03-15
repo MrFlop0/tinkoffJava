@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 public class UntrackCommand implements Command {
 
     private final ScrapperClient scrapperClient;
+
     @Override
     public String command() {
         return "/untrack";
@@ -43,7 +44,11 @@ public class UntrackCommand implements Command {
         }
 
         return scrapperClient.removeLink(update.message().chat().id(), message[1])
-            .map(response -> new SendMessage(update.message().chat().id(), "Link " + response.url() + " successfully removed from tracking"))
+            .map(response -> new SendMessage(
+                    update.message().chat().id(),
+                    "Link " + response.url() + " successfully removed from tracking"
+                )
+            )
             .onErrorResume(error -> Mono.just(new SendMessage(update.message().chat().id(), error.getMessage())))
             .block();
         //return new SendMessage(update.message().chat().id(), "Untrack command not supported yet.");

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class JdbcChatService implements ChatService {
 
     private final ChatRepository repository;
+
     @Override
     public void register(long chatId) {
         repository.add(chatId);

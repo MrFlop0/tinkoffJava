@@ -5,9 +5,9 @@ import edu.java.domain.dto.Link;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.domain.repository.LinkToChatRepository;
 import edu.java.service.LinkService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

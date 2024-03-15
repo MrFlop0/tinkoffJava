@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@SuppressWarnings("MagicNumber")
 public class ScrapperControllerImpl implements ScrapperController {
 
     private final LinkService linkService;

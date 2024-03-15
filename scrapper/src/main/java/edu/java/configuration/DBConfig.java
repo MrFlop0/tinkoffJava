@@ -16,13 +16,21 @@ import org.springframework.jdbc.core.RowMapper;
 @Configuration
 public class DBConfig {
 
+    private static final String URL = "jdbc:postgresql://localhost:5432/scrapper";
+    private static final String POSTGRES = "postgres";
+    private static final String CHAT_ID = "chat_id";
+    private static final String LINK = "link";
+    private static final String TYPE = "type";
+    private static final String UPDATE_DATE = "update_date";
+    private static final String PREVIOUS_CHECK = "previous_check";
+
     @Bean
     public DataSource dataSource() {
         return DataSourceBuilder.create()
             .driverClassName("org.postgresql.Driver")
-            .url("jdbc:postgresql://localhost:5432/scrapper")
-            .username("postgres")
-            .password("postgres")
+            .url(URL)
+            .username(POSTGRES)
+            .password(POSTGRES)
             .build();
     }
 
@@ -34,17 +42,17 @@ public class DBConfig {
     @Bean
     public RowMapper<Chat> chatRowMapper() {
         return (resultSet, rowNum) ->
-            new Chat(resultSet.getLong("chat_id"));
+            new Chat(resultSet.getLong(CHAT_ID));
     }
 
     @Bean
     public RowMapper<Link> linkRowMapper() {
         return (resultSet, rowNum) ->
             new Link(
-                resultSet.getString("link"),
-                resultSet.getInt("type"),
-                timestampToOffsetDate(resultSet.getTimestamp("update_date")),
-                timestampToOffsetDate(resultSet.getTimestamp("previous_check"))
+                resultSet.getString(LINK),
+                resultSet.getInt(TYPE),
+                timestampToOffsetDate(resultSet.getTimestamp(UPDATE_DATE)),
+                timestampToOffsetDate(resultSet.getTimestamp(PREVIOUS_CHECK))
             );
 
     }
@@ -53,12 +61,12 @@ public class DBConfig {
     public RowMapper<LinkChat> linkChatRowMapper() {
         return (resultSet, rowNum) ->
             new LinkChat(
-                new Chat(resultSet.getLong("chat_id")),
+                new Chat(resultSet.getLong(CHAT_ID)),
                 new Link(
-                    resultSet.getString("link"),
-                    resultSet.getInt("type"),
-                    timestampToOffsetDate(resultSet.getTimestamp("update_date")),
-                    timestampToOffsetDate(resultSet.getTimestamp("previous_check"))
+                    resultSet.getString(LINK),
+                    resultSet.getInt(LINK),
+                    timestampToOffsetDate(resultSet.getTimestamp(UPDATE_DATE)),
+                    timestampToOffsetDate(resultSet.getTimestamp(PREVIOUS_CHECK))
                 )
             );
     }

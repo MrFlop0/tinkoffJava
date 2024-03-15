@@ -5,6 +5,9 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.httpclient.ScrapperClient;
+import edu.java.bot.httpclient.dto.Response.LinkResponse;
+import edu.java.bot.httpclient.dto.Response.ListLinksResponse;
 import edu.java.bot.pengrad.UpdateListener;
 import edu.java.bot.pengrad.command.Command;
 import edu.java.bot.pengrad.command.HelpCommand;
@@ -12,6 +15,8 @@ import edu.java.bot.pengrad.command.ListCommand;
 import edu.java.bot.pengrad.command.StartCommand;
 import edu.java.bot.pengrad.command.TrackCommand;
 import edu.java.bot.pengrad.command.UntrackCommand;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +24,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,19 +45,32 @@ public class UpdateListenerTest {
     private Chat chat;
 
     @Mock
+    private ScrapperClient scrapperClient;
+
+    @Mock
     private List<Command> commands;
 
     private UpdateListener updateListener;
     private final List<Command> supportedCommands = List.of(
-        new StartCommand(null),
-        new ListCommand(null),
-        new TrackCommand(null),
-        new UntrackCommand(null)
+        new StartCommand(scrapperClient),
+        new ListCommand(scrapperClient),
+        new TrackCommand(scrapperClient),
+        new UntrackCommand(scrapperClient)
     );
 
+    public void setUpScrapperClient() throws URISyntaxException {
+        when(scrapperClient.register(any())).thenReturn(Mono.empty());
+        when(scrapperClient.addLink(any(), eq("https://github.com/owner/repo")))
+            .thenReturn(Mono.just(new LinkResponse(0L, new URI("https://github.com/owner/repo"))));
+        when(scrapperClient.removeLink(any(), eq("https://github.com/owner/repo")))
+            .thenReturn(Mono.just(new LinkResponse(0L, new URI("https://github.com/owner/repo"))));
+        when(scrapperClient.getLinks(any())).thenReturn(Mono.just(new ListLinksResponse(0, List.of())));
+    }
+
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws URISyntaxException {
         MockitoAnnotations.openMocks(this);
+        setUpScrapperClient();
         updateListener = new UpdateListener(commands, bot);
         bot.setUpdatesListener(updateListener);
     }
@@ -57,7 +78,7 @@ public class UpdateListenerTest {
     @Test
     public void testStart() {
         successfulCommandTest(
-            Stream.of(new StartCommand(null)),
+            Stream.of(new StartCommand(scrapperClient)),
             "/start",
             """
                 Hello! I'm a Link Listener bot.
@@ -99,27 +120,27 @@ public class UpdateListenerTest {
     @Test
     public void testTrack() {
         successfulCommandTest(
-            Stream.of(new TrackCommand(null)),
-            "/track link",
-            "Track command not supported yet."
+            Stream.of(new TrackCommand(scrapperClient)),
+            "/track https://github.com/owner/repo",
+            "Link https://github.com/owner/repo successfully added for tracking"
         );
     }
 
     @Test
-    public  void testUntrack() {
+    public void testUntrack() {
         successfulCommandTest(
-            Stream.of(new UntrackCommand(null)),
-            "/untrack link",
-            "Untrack command not supported yet."
+            Stream.of(new UntrackCommand(scrapperClient)),
+            "/untrack https://github.com/owner/repo",
+            "Link https://github.com/owner/repo successfully removed from tracking"
         );
     }
 
     @Test
     public void testList() {
         successfulCommandTest(
-            Stream.of(new ListCommand(null)),
+            Stream.of(new ListCommand(scrapperClient)),
             "/list",
-            "List command not supported yet."
+            "No links are being tracked"
         );
     }
 

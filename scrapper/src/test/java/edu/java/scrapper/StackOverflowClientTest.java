@@ -20,7 +20,7 @@ public class StackOverflowClientTest {
 
     @Test
     public void testStackOverflowResponse() {
-        stubFor(get(urlEqualTo("/2.3/questions/1?order=desc&sort=activity&site=stackoverflow")).willReturn(
+        stubFor(get(urlEqualTo("/questions/1?order=desc&sort=activity&site=stackoverflow")).willReturn(
                 aResponse()
                     .withBodyFile("StackOverflowJSON.json")
                     .withStatus(200)
@@ -45,7 +45,7 @@ public class StackOverflowClientTest {
 
     @Test
     public void testFailedRequest() {
-        stubFor(get("/2.3/questions/1?order=desc&sort=activity&site=stackoverflow").willReturn(aResponse().withStatus(400)));
+        stubFor(get("/2.3/questions/1?order=desc&sort=activity&site=stackoverflow").willReturn(aResponse().withStatus(404)));
 
         StepVerifier.create(client.getQuestionInfo(1L))
             .expectErrorSatisfies(

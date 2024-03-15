@@ -64,7 +64,7 @@ public class DBConfig {
                 new Chat(resultSet.getLong(CHAT_ID)),
                 new Link(
                     resultSet.getString(LINK),
-                    resultSet.getInt(LINK),
+                    resultSet.getInt(TYPE),
                     timestampToOffsetDate(resultSet.getTimestamp(UPDATE_DATE)),
                     timestampToOffsetDate(resultSet.getTimestamp(PREVIOUS_CHECK))
                 )

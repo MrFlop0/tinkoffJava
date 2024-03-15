@@ -13,7 +13,7 @@ public class MigrationTest {
 
     @Test
     public void testMigrations() throws SQLException {
-        String insert = "INSERT INTO link (link, type, update_date) VALUES ('test', 1, now())";
+        String insert = "INSERT INTO link (link, type, update_date, previous_check) VALUES ('test', 1, now(), now())";
         String select = "SELECT * FROM link";
 
         Connection connection = DriverManager.getConnection(
@@ -30,7 +30,7 @@ public class MigrationTest {
         assertThat(result.getString("link")).isEqualTo("test");
         assertThat(result.getInt("type")).isEqualTo(1);
 
-        String delete = "DELETE * FROM link";
+        String delete = "DELETE FROM link";
         connection.createStatement().executeUpdate(delete);
         connection.close();
     }

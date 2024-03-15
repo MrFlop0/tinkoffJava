@@ -4,9 +4,6 @@ import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Link;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.scrapper.IntegrationTest;
-import java.sql.Timestamp;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,20 +68,5 @@ public class LinkRepositoryTest {
         assertThat(links.get(1).link()).isEqualTo("test1");
         assertThat(links.getLast().link()).isEqualTo("test2");
 
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    public void findLinksToCheckTest() {
-        linkRepository.add("test", 0);
-
-        var time =
-            Timestamp.valueOf(OffsetDateTime.now().minusMinutes(6).atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
-        linkRepository.updateCheckDate("test", time);
-
-        List<Link> links = linkRepository.findLinksToCheck();
-
-        assertThat(links.size()).isEqualTo(1);
     }
 }

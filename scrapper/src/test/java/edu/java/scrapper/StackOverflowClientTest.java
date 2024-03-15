@@ -52,7 +52,7 @@ public class StackOverflowClientTest {
                 error -> {
                     assertThat(error)
                         .isInstanceOf(WebClientResponseException.class)
-                        .hasMessage("400 Server Error occured");
+                        .hasMessage("404 Server Error occured");
                     assertThat(((WebClientResponseException) error).getStatusCode().is4xxClientError())
                         .isEqualTo(true);
                 }

@@ -25,11 +25,14 @@ public class MigrationTest {
         int count = connection.createStatement().executeUpdate(insert);
         ResultSet result = connection.createStatement().executeQuery(select);
 
-        connection.close();
         assertThat(count).isEqualTo(1);
         assertThat(result.next()).isTrue();
         assertThat(result.getString("link")).isEqualTo("test");
         assertThat(result.getInt("type")).isEqualTo(1);
+
+        String delete = "DELETE * FROM link";
+        connection.createStatement().executeUpdate(delete);
+        connection.close();
     }
 
 }

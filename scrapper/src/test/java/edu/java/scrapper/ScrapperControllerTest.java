@@ -71,7 +71,7 @@ public class ScrapperControllerTest {
     void getLinks() throws URISyntaxException {
         long chatId = 1L;
         scrapperController.getLinks(chatId);
-        Link test = new Link("http://github.com", 1, OffsetDateTime.now(), OffsetDateTime.now());
+        Link test = new Link("http://github.com", 1, null, null, OffsetDateTime.now(), OffsetDateTime.now());
         when(linkService.findLinksByChat(chatId)).thenReturn(List.of(test));
         verify(linkService, times(1)).findLinksByChat(chatId);
         assertThat(scrapperController.getLinks(chatId).getBody())

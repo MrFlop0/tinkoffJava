@@ -1,13 +1,13 @@
-package edu.java.scrapper.repos;
+package edu.java.scrapper.repos.jdbc;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Chat;
 import edu.java.domain.dto.Link;
 import edu.java.domain.dto.LinkChat;
 import edu.java.domain.dto.LinkInfo;
-import edu.java.domain.repository.ChatRepository;
-import edu.java.domain.repository.LinkRepository;
-import edu.java.domain.repository.LinkToChatRepository;
+import edu.java.domain.repository.jdbc.JdbcChatRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkToChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -20,20 +20,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    LinkRepository.class,
-    ChatRepository.class,
-    LinkToChatRepository.class
+    JdbcLinkRepository.class,
+    JdbcChatRepository.class,
+    JdbcLinkToChatRepository.class
 })
-public class LinkToChatRepositoryTest {
+public class JdbcLinkToChatRepositoryTest {
 
     @Autowired
-    private LinkToChatRepository linkToChatRepository;
+    private JdbcLinkToChatRepository linkToChatRepository;
 
     @Autowired
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
 
     @Autowired
-    private ChatRepository chatRepository;
+    private JdbcChatRepository chatRepository;
 
     @Test
     @Transactional

@@ -8,6 +8,7 @@ import org.jooq.meta.jaxb.Generator;
 import org.jooq.meta.jaxb.Property;
 import org.jooq.meta.jaxb.Target;
 
+@SuppressWarnings({"HideUtilityClassConstructor", "UncommentedMain"})
 public class JooqCodegen {
     public static void main(String[] args) throws Exception {
         Database database = new Database()
@@ -35,7 +36,7 @@ public class JooqCodegen {
             .withPojos(true);
 
         Target target = new Target()
-            .withPackageName("edu.java.scrapper.domain.jooq")
+            .withPackageName("edu.java.domain.jooq")
             .withDirectory("scrapper/src/main/java");
 
         Configuration configuration = new Configuration()

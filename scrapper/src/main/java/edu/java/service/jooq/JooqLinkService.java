@@ -1,10 +1,10 @@
-package edu.java.service.jdbc;
+package edu.java.service.jooq;
 
 import edu.java.domain.dto.Chat;
 import edu.java.domain.dto.Link;
 import edu.java.domain.dto.LinkInfo;
-import edu.java.domain.repository.jdbc.JdbcLinkRepository;
-import edu.java.domain.repository.jdbc.JdbcLinkToChatRepository;
+import edu.java.domain.repository.jooq.JooqLinkRepository;
+import edu.java.domain.repository.jooq.JooqLinkToChatRepository;
 import edu.java.service.LinkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class JdbcLinkService implements LinkService {
+public class JooqLinkService implements LinkService {
 
-    private final JdbcLinkRepository linkRepository;
-    private final JdbcLinkToChatRepository mapperRepository;
+    private final JooqLinkRepository repository;
+    private final JooqLinkToChatRepository mapperRepository;
 
     @Override
     public boolean add(long chatId, LinkInfo info) {
-        return linkRepository.add(info) && mapperRepository.add(info.url(), chatId);
+        return repository.add(info) && mapperRepository.add(info.url(), chatId);
     }
 
     @Override
     public boolean delete(long chatId, String url) {
-        return mapperRepository.delete(url, chatId) && linkRepository.delete(url);
+        return mapperRepository.delete(url, chatId) && repository.delete(url);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public List<Link> findLinksToCheck() {
-        return linkRepository.findLinksToCheck();
+        return repository.findLinksToCheck();
     }
 }

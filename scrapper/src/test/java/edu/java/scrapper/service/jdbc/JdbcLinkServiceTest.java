@@ -2,9 +2,9 @@ package edu.java.scrapper.service.jdbc;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.LinkInfo;
-import edu.java.domain.repository.ChatRepository;
-import edu.java.domain.repository.LinkRepository;
-import edu.java.domain.repository.LinkToChatRepository;
+import edu.java.domain.repository.jdbc.JdbcChatRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkToChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import edu.java.service.jdbc.JdbcLinkService;
 import org.junit.jupiter.api.Test;
@@ -17,21 +17,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    LinkRepository.class,
+    JdbcLinkRepository.class,
     JdbcLinkService.class,
-    LinkToChatRepository.class,
-    ChatRepository.class
+    JdbcLinkToChatRepository.class,
+    JdbcChatRepository.class
 })
 public class JdbcLinkServiceTest extends IntegrationTest {
 
     @Autowired
     private JdbcLinkService linkService;
     @Autowired
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
     @Autowired
-    private ChatRepository chatRepository;
+    private JdbcChatRepository chatRepository;
     @Autowired
-    private LinkToChatRepository linkToChatRepository;
+    private JdbcLinkToChatRepository linkToChatRepository;
 
     @Test
     @Transactional
@@ -49,8 +49,8 @@ public class JdbcLinkServiceTest extends IntegrationTest {
         assertThat(linkRepository.findAll().getFirst().type()).isEqualTo(1);
 
         assertThat(linkToChatRepository.findAll()).isNotEmpty();
-        assertThat(linkToChatRepository.findAll().getFirst().link().link()).isEqualTo("test");
-        assertThat(linkToChatRepository.findAll().getFirst().chat().chatId()).isEqualTo(0);
+        assertThat(linkToChatRepository.findAll().getFirst().link()).isEqualTo("test");
+        assertThat(linkToChatRepository.findAll().getFirst().chatId()).isEqualTo(0);
     }
 
     @Test

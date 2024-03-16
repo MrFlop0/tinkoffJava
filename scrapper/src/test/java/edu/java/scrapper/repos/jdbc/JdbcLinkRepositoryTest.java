@@ -1,9 +1,9 @@
-package edu.java.scrapper.repos;
+package edu.java.scrapper.repos.jdbc;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Link;
 import edu.java.domain.dto.LinkInfo;
-import edu.java.domain.repository.LinkRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -16,12 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    LinkRepository.class
+    JdbcLinkRepository.class
 })
-public class LinkRepositoryTest {
+public class JdbcLinkRepositoryTest {
 
     @Autowired
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
 
     @Test
     @Transactional

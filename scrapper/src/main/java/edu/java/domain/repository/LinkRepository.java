@@ -1,6 +1,7 @@
 package edu.java.domain.repository;
 
 import edu.java.domain.dto.Link;
+import edu.java.domain.dto.LinkInfo;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,11 @@ public class LinkRepository {
         return jdbcTemplate.query(request, linkRowMapper);
     }
 
-    public boolean add(String link, int type) {
+    public boolean add(LinkInfo info) {
         String request =
-            "insert into link (link, type, update_date, previous_check) "
-                + "values (?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
-        return jdbcTemplate.update(request, link, type) != 0;
+            "insert into link (link, type, stars_count, update_date, previous_check) "
+                + "values (?, ?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
+        return jdbcTemplate.update(request, info.url(), info.type(), info.starsCount()) != 0;
     }
 
     public boolean delete(String link) {
@@ -64,6 +65,18 @@ public class LinkRepository {
         return false;
     }
 
+    public boolean refreshForksCount(String link, Long count) {
+        String request = "update link set stars_count = ? where link = ?";
+
+        var lastForksCount = getForksCount(link);
+        if (lastForksCount != null && !count.equals(lastForksCount)) {
+            jdbcTemplate.update(request, count, link);
+            return true;
+        }
+
+        return false;
+    }
+
     private Timestamp getUpdatedDate(String link) {
         String request = "select update_date from link where link = ?";
         return jdbcTemplate.queryForObject(request, Timestamp.class, link);
@@ -73,4 +86,10 @@ public class LinkRepository {
         String request = "select previous_check from link where link = ?";
         return jdbcTemplate.queryForObject(request, Timestamp.class, link);
     }
+
+    private Long getForksCount(String link) {
+        String request = "select stars_count from link where link = ?";
+        return jdbcTemplate.queryForObject(request, Long.class, link);
+    }
+
 }

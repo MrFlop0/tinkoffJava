@@ -10,4 +10,6 @@ public interface LinkUpdater {
     boolean refreshUpdateDate(String link, OffsetDateTime time);
 
     List<Link> getLinksToCheck();
+
+    boolean refreshForksCount(String link, Long count);
 }

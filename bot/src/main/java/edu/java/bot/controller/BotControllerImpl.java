@@ -16,7 +16,7 @@ public class BotControllerImpl implements BotController {
     @PostMapping("/updates")
     public void updates(LinkUpdateRequest request) {
         request.tgChatIds().stream()
-            .map(id -> new SendMessage(id, String.format("Link: %s has been updated", request.url())))
+            .map(id -> new SendMessage(id, request.description()))
             .forEach(bot::execute);
     }
 }

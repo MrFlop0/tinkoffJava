@@ -4,6 +4,7 @@ import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Chat;
 import edu.java.domain.dto.Link;
 import edu.java.domain.dto.LinkChat;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.domain.repository.ChatRepository;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.domain.repository.LinkToChatRepository;
@@ -40,7 +41,7 @@ public class LinkToChatRepositoryTest {
     public void addTest() {
         chatRepository.add(0L);
         chatRepository.add(1L);
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
 
@@ -55,7 +56,7 @@ public class LinkToChatRepositoryTest {
     @Rollback
     public void deleteTest() {
         chatRepository.add(1L);
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
         linkToChatRepository.add("test", 1L);
 
         linkToChatRepository.delete("test", 1L);
@@ -73,10 +74,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test1", 0, null));
+        linkRepository.add(new LinkInfo("test2", 0, null));
+        linkRepository.add(new LinkInfo("test3", 0, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test1", 1L);
         linkToChatRepository.add("test2", 2L);
@@ -95,10 +96,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test1", 0, null));
+        linkRepository.add(new LinkInfo("test2", 0, null));
+        linkRepository.add(new LinkInfo("test3", 0, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
@@ -129,10 +130,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test1", 0, null));
+        linkRepository.add(new LinkInfo("test2", 0, null));
+        linkRepository.add(new LinkInfo("test3", 0, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);

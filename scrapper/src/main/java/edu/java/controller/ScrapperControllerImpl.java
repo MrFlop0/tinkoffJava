@@ -4,10 +4,11 @@ import edu.java.controller.dto.Request.AddLinkRequest;
 import edu.java.controller.dto.Request.RemoveLinkRequest;
 import edu.java.controller.dto.Response.LinkResponse;
 import edu.java.controller.dto.Response.ListLinksResponse;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
-import edu.java.utils.GithubLinkParser;
-import edu.java.utils.StackoverflowLinkParser;
+import edu.java.utils.GithubLinkHandler;
+import edu.java.utils.StackoverflowLinkHandler;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
@@ -26,6 +27,8 @@ public class ScrapperControllerImpl implements ScrapperController {
 
     private final LinkService linkService;
     private final ChatService chatService;
+    private final GithubLinkHandler githubLinkHandler;
+    private final StackoverflowLinkHandler stackoverflowLinkParser;
 
     @Override
     public void register(@PathVariable Long id) {
@@ -54,23 +57,26 @@ public class ScrapperControllerImpl implements ScrapperController {
 
     @Override
     public ResponseEntity<LinkResponse> addLink(Long chatId, AddLinkRequest request) {
-        int type = checkType(request.link());
-        if (type == -1) {
+        LinkInfo info = getLinkInfo(request.link());
+        if (info == null) {
             throw new RuntimeException("Link not supported");
         }
-        linkService.add(chatId, request.link().toString(), type);
+        linkService.add(chatId, info);
         log.debug("Added link {}\nFor chat id={}", request.link(), chatId);
         return new ResponseEntity<>(new LinkResponse(chatId, request.link()), null, 200);
     }
 
-    private int checkType(URI link) {
-        if (GithubLinkParser.parse(link.toString()) != null) {
-            return 1;
-        } else if (StackoverflowLinkParser.parse(link.toString()) != null) {
-            return 0;
+    private LinkInfo getLinkInfo(URI link) {
+        LinkInfo info = githubLinkHandler.getLinkInfo(link.toString());
+        if (info == null) {
+            info = stackoverflowLinkParser.getLinkInfo(link.toString());
         }
-        return -1;
+        return info;
     }
+
+
+
+
 
     @Override
     public ResponseEntity<LinkResponse> removeLink(Long chatId, RemoveLinkRequest request) {

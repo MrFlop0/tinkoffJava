@@ -31,4 +31,9 @@ public class JdbcLinkUpdater implements LinkUpdater {
     public List<Link> getLinksToCheck() {
         return linkRepository.findLinksToCheck();
     }
+
+    @Override
+    public boolean refreshForksCount(String link, Long count) {
+        return linkRepository.refreshForksCount(link, count);
+    }
 }

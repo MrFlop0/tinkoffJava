@@ -1,6 +1,7 @@
 package edu.java.scrapper.service.jdbc;
 
 import edu.java.configuration.DBConfig;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.domain.repository.ChatRepository;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.domain.repository.LinkToChatRepository;
@@ -41,7 +42,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
         assertThat(chatRepository.findAll()).isEmpty();
 
         chatRepository.add(0L);
-        linkService.add(0, "test", 1);
+        linkService.add(0, new LinkInfo("test", 1, null));
 
         assertThat(linkRepository.findAll()).isNotEmpty();
         assertThat(linkRepository.findAll().getFirst().link()).isEqualTo("test");
@@ -56,7 +57,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void delete() {
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
         chatRepository.add(1L);
         linkToChatRepository.add("test", 1L);
 
@@ -74,7 +75,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Rollback
     public void findLinksByChat() {
         chatRepository.add(1L);
-        linkService.add(1L, "test", 1);
+        linkService.add(1L, new LinkInfo("test", 1, null));
 
         assertThat(linkService.findLinksByChat(1L)).isNotEmpty();
         assertThat(linkService.findLinksByChat(1L).getFirst().link()).isEqualTo("test");
@@ -86,7 +87,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Rollback
     public void findChatsByLink() {
         chatRepository.add(1L);
-        linkService.add(1L, "test", 1);
+        linkService.add(1L, new LinkInfo("test", 1, null));
 
         assertThat(linkService.findChatsByLink("test")).isNotEmpty();
         assertThat(linkService.findChatsByLink("test").getFirst().chatId()).isEqualTo(1L);

@@ -2,6 +2,7 @@ package edu.java.service.jdbc;
 
 import edu.java.domain.dto.Chat;
 import edu.java.domain.dto.Link;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.domain.repository.LinkToChatRepository;
 import edu.java.service.LinkService;
@@ -17,8 +18,8 @@ public class JdbcLinkService implements LinkService {
     private final LinkToChatRepository mapperRepository;
 
     @Override
-    public boolean add(long chatId, String url, int type) {
-        return linkRepository.add(url, type) && mapperRepository.add(url, chatId);
+    public boolean add(long chatId, LinkInfo info) {
+        return linkRepository.add(info) && mapperRepository.add(info.url(), chatId);
     }
 
     @Override

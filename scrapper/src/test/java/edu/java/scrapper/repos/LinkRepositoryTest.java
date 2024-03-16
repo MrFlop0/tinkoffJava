@@ -2,6 +2,7 @@ package edu.java.scrapper.repos;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Link;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.domain.repository.LinkRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
@@ -26,8 +27,8 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void addLink() {
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 1);
+        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test1", 1, null));
 
         List<Link> links = linkRepository.findAll();
 
@@ -45,7 +46,7 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void deleteLink() {
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
         linkRepository.delete("test");
 
         List<Link> links = linkRepository.findAll();
@@ -57,9 +58,9 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void findAllTest() {
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
+        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test1", 0, null));
+        linkRepository.add(new LinkInfo("test2", 0, null));
 
         List<Link> links = linkRepository.findAll();
 

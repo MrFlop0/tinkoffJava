@@ -23,9 +23,9 @@ public class LinkRepository {
 
     public boolean add(LinkInfo info) {
         String request =
-            "insert into link (link, type, stars_count, update_date, previous_check) "
-                + "values (?, ?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
-        return jdbcTemplate.update(request, info.url(), info.type(), info.starsCount()) != 0;
+            "insert into link (link, type, stars_count, answers_count, update_date, previous_check) "
+                + "values (?, ?, ?, ?, timezone('utc', now()), timezone('utc', now())) on conflict do nothing";
+        return jdbcTemplate.update(request, info.url(), info.type(), info.starsCount(), info.answerCount()) != 0;
     }
 
     public boolean delete(String link) {
@@ -77,6 +77,18 @@ public class LinkRepository {
         return false;
     }
 
+    public boolean refreshAnswersCount(String link, Long count) {
+        String request = "update link set answers_count = ? where link = ?";
+
+        var lastAnswersCount = getAnswersCount(link);
+        if (lastAnswersCount != null && !count.equals(lastAnswersCount)) {
+            jdbcTemplate.update(request, count, link);
+            return true;
+        }
+
+        return false;
+    }
+
     private Timestamp getUpdatedDate(String link) {
         String request = "select update_date from link where link = ?";
         return jdbcTemplate.queryForObject(request, Timestamp.class, link);
@@ -89,6 +101,11 @@ public class LinkRepository {
 
     private Long getForksCount(String link) {
         String request = "select stars_count from link where link = ?";
+        return jdbcTemplate.queryForObject(request, Long.class, link);
+    }
+
+    private Long getAnswersCount(String link) {
+        String request = "select answers_count from link where link = ?";
         return jdbcTemplate.queryForObject(request, Long.class, link);
     }
 

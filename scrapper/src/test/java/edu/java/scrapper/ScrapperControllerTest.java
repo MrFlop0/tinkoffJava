@@ -42,7 +42,7 @@ public class ScrapperControllerTest {
 
     private void setUpMocks() {
         when(githubLinkHandler.getLinkInfo(eq("https://github.com/owner/repo")))
-            .thenReturn(new LinkInfo("https://github.com/owner/repo", 1, null));
+            .thenReturn(new LinkInfo("https://github.com/owner/repo", 1, null, null));
     }
 
     @BeforeEach
@@ -86,7 +86,7 @@ public class ScrapperControllerTest {
         long chatId = 1L;
         URI link = URI.create("https://github.com/owner/repo");
         scrapperController.addLink(chatId, new AddLinkRequest(link));
-        verify(linkService, times(1)).add(chatId, new LinkInfo(link.toString(), 1, null));
+        verify(linkService, times(1)).add(chatId, new LinkInfo(link.toString(), 1, null, null));
     }
 
     @Test

@@ -41,7 +41,7 @@ public class LinkToChatRepositoryTest {
     public void addTest() {
         chatRepository.add(0L);
         chatRepository.add(1L);
-        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
 
@@ -50,13 +50,12 @@ public class LinkToChatRepositoryTest {
         assertThat(mapping.size()).isEqualTo(2);
     }
 
-
     @Test
     @Transactional
     @Rollback
     public void deleteTest() {
         chatRepository.add(1L);
-        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkToChatRepository.add("test", 1L);
 
         linkToChatRepository.delete("test", 1L);
@@ -74,10 +73,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add(new LinkInfo("test", 0, null));
-        linkRepository.add(new LinkInfo("test1", 0, null));
-        linkRepository.add(new LinkInfo("test2", 0, null));
-        linkRepository.add(new LinkInfo("test3", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test1", 1L);
         linkToChatRepository.add("test2", 2L);
@@ -96,10 +95,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add(new LinkInfo("test", 0, null));
-        linkRepository.add(new LinkInfo("test1", 0, null));
-        linkRepository.add(new LinkInfo("test2", 0, null));
-        linkRepository.add(new LinkInfo("test3", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
@@ -110,7 +109,7 @@ public class LinkToChatRepositoryTest {
         linkToChatRepository.add("test3", 0L);
         linkToChatRepository.add("test3", 2L);
 
-        List<Chat> test  = linkToChatRepository.findChatsByLink("test");
+        List<Chat> test = linkToChatRepository.findChatsByLink("test");
         List<Chat> test1 = linkToChatRepository.findChatsByLink("test1");
         List<Chat> test2 = linkToChatRepository.findChatsByLink("test2");
         List<Chat> test3 = linkToChatRepository.findChatsByLink("test3");
@@ -121,7 +120,6 @@ public class LinkToChatRepositoryTest {
         assertThat(test3.stream().map(Chat::chatId)).isEqualTo(List.of(0L, 2L));
     }
 
-
     @Test
     @Transactional
     @Rollback
@@ -130,10 +128,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add(new LinkInfo("test", 0, null));
-        linkRepository.add(new LinkInfo("test1", 0, null));
-        linkRepository.add(new LinkInfo("test2", 0, null));
-        linkRepository.add(new LinkInfo("test3", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
@@ -154,6 +152,5 @@ public class LinkToChatRepositoryTest {
         assertThat(chat2.stream().map(Link::link)).isEqualTo(List.of("test1", "test3"));
         assertThat(chat3.stream().map(Link::link)).isEqualTo(List.of("test1", "test2"));
     }
-
 
 }

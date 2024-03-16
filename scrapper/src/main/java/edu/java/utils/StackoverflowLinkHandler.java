@@ -24,7 +24,7 @@ public class StackoverflowLinkHandler {
         if (info == null) {
             return null;
         }
-        return new LinkInfo(link, 0, null);
+        return new LinkInfo(link, 0, null, info.items.getFirst().answerCount());
     }
 }
 

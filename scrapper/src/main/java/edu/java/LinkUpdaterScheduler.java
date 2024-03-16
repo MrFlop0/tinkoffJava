@@ -101,7 +101,7 @@ public class LinkUpdaterScheduler {
     }
 
     private String prepareDescriptionMessage(RepoInfo info, String link) {
-        if (linkUpdater.refreshForksCount(link, info.starsCount)) {
+        if (linkUpdater.refreshStarsCount(link, info.starsCount)) {
             return String.format("Stars count has been changed on this repo %s\n"
                 + "Current number of stars: %d", link, info.starsCount);
         }
@@ -110,6 +110,10 @@ public class LinkUpdaterScheduler {
     }
 
     private String prepareDescriptionMessage(QuestionInfo info, String link) {
+        if (linkUpdater.refreshAnswersCount(link, info.items.getFirst().answerCount())) {
+            return String.format("Answers count has been changed on this question %s\n"
+                + "Current number of answers: %d", link, info.items.getFirst().answerCount());
+        }
         return String.format("Link %s has been updated", link);
     }
 

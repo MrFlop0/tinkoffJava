@@ -28,6 +28,6 @@ public class GithubLinkHandler {
         }
         var info = client.getRepoInfo(githubParams.getKey(), githubParams.getValue()).block();
         assert info != null;
-        return new LinkInfo(link, 1, info.starsCount);
+        return new LinkInfo(link, 1, info.starsCount, null);
     }
 }

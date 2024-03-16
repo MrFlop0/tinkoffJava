@@ -27,8 +27,8 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void addLink() {
-        linkRepository.add(new LinkInfo("test", 0, null));
-        linkRepository.add(new LinkInfo("test1", 1, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 1, null, null));
 
         List<Link> links = linkRepository.findAll();
 
@@ -46,7 +46,7 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void deleteLink() {
-        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkRepository.delete("test");
 
         List<Link> links = linkRepository.findAll();
@@ -58,9 +58,9 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void findAllTest() {
-        linkRepository.add(new LinkInfo("test", 0, null));
-        linkRepository.add(new LinkInfo("test1", 0, null));
-        linkRepository.add(new LinkInfo("test2", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
 
         List<Link> links = linkRepository.findAll();
 

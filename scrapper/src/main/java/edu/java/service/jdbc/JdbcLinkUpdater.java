@@ -33,7 +33,12 @@ public class JdbcLinkUpdater implements LinkUpdater {
     }
 
     @Override
-    public boolean refreshForksCount(String link, Long count) {
+    public boolean refreshStarsCount(String link, Long count) {
         return linkRepository.refreshForksCount(link, count);
+    }
+
+    @Override
+    public boolean refreshAnswersCount(String link, Long count) {
+        return linkRepository.refreshAnswersCount(link, count);
     }
 }

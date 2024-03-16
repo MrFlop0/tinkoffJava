@@ -11,5 +11,7 @@ public interface LinkUpdater {
 
     List<Link> getLinksToCheck();
 
-    boolean refreshForksCount(String link, Long count);
+    boolean refreshStarsCount(String link, Long count);
+
+    boolean refreshAnswersCount(String link, Long count);
 }

@@ -42,7 +42,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
         assertThat(chatRepository.findAll()).isEmpty();
 
         chatRepository.add(0L);
-        linkService.add(0, new LinkInfo("test", 1, null));
+        linkService.add(0, new LinkInfo("test", 1, null, null));
 
         assertThat(linkRepository.findAll()).isNotEmpty();
         assertThat(linkRepository.findAll().getFirst().link()).isEqualTo("test");
@@ -57,7 +57,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void delete() {
-        linkRepository.add(new LinkInfo("test", 0, null));
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         chatRepository.add(1L);
         linkToChatRepository.add("test", 1L);
 
@@ -75,7 +75,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Rollback
     public void findLinksByChat() {
         chatRepository.add(1L);
-        linkService.add(1L, new LinkInfo("test", 1, null));
+        linkService.add(1L, new LinkInfo("test", 1, null, null));
 
         assertThat(linkService.findLinksByChat(1L)).isNotEmpty();
         assertThat(linkService.findLinksByChat(1L).getFirst().link()).isEqualTo("test");
@@ -87,7 +87,7 @@ public class JdbcLinkServiceTest extends IntegrationTest {
     @Rollback
     public void findChatsByLink() {
         chatRepository.add(1L);
-        linkService.add(1L, new LinkInfo("test", 1, null));
+        linkService.add(1L, new LinkInfo("test", 1, null, null));
 
         assertThat(linkService.findChatsByLink("test")).isNotEmpty();
         assertThat(linkService.findChatsByLink("test").getFirst().chatId()).isEqualTo(1L);

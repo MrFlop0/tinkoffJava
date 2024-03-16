@@ -106,7 +106,7 @@ public class LinkUpdaterScheduler {
                 + "Current number of stars: %d", link, info.starsCount);
         }
 
-        return String.format("Link %s has been updated", link);
+        return String.format("Github Link %s has been updated", link);
     }
 
     private String prepareDescriptionMessage(QuestionInfo info, String link) {
@@ -114,7 +114,7 @@ public class LinkUpdaterScheduler {
             return String.format("Answers count has been changed on this question %s\n"
                 + "Current number of answers: %d", link, info.items.getFirst().answerCount());
         }
-        return String.format("Link %s has been updated", link);
+        return String.format("Stackoverflow Link %s has been updated", link);
     }
 
 }

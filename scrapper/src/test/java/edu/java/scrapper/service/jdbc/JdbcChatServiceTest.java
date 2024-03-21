@@ -1,7 +1,7 @@
 package edu.java.scrapper.service.jdbc;
 
 import edu.java.configuration.DBConfig;
-import edu.java.domain.repository.ChatRepository;
+import edu.java.domain.repository.jdbc.JdbcChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import edu.java.service.jdbc.JdbcChatService;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    ChatRepository.class,
+    JdbcChatRepository.class,
     JdbcChatService.class
 })
 public class JdbcChatServiceTest extends IntegrationTest {
@@ -22,7 +22,7 @@ public class JdbcChatServiceTest extends IntegrationTest {
     @Autowired
     private JdbcChatService chatService;
     @Autowired
-    private ChatRepository chatRepository;
+    private JdbcChatRepository chatRepository;
 
     @Test
     @Transactional

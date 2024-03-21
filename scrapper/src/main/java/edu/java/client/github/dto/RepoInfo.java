@@ -8,6 +8,9 @@ public class RepoInfo {
     public Long id;
     public Owner owner;
 
+    @JsonProperty("stargazers_count")
+    public Long starsCount;
+
     @JsonProperty("created_at")
     public OffsetDateTime createDate;
     @JsonProperty("updated_at")

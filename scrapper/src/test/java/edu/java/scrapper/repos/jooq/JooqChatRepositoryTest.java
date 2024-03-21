@@ -1,8 +1,8 @@
-package edu.java.scrapper.repos;
+package edu.java.scrapper.repos.jooq;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Chat;
-import edu.java.domain.repository.ChatRepository;
+import edu.java.domain.repository.jooq.JooqChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,12 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    ChatRepository.class
+    JooqChatRepository.class
 })
-public class ChatRepositoryTest extends IntegrationTest {
+public class JooqChatRepositoryTest extends IntegrationTest {
 
     @Autowired
-    private ChatRepository chatRepository;
+    private JooqChatRepository chatRepository;
 
     @Test
     @Transactional
@@ -60,5 +60,6 @@ public class ChatRepositoryTest extends IntegrationTest {
 
         assertThat(chats.size()).isEqualTo(5);
     }
+
 
 }

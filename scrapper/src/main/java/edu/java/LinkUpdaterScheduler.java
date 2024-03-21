@@ -9,8 +9,8 @@ import edu.java.client.stackoverflow.dto.QuestionInfo;
 import edu.java.domain.dto.Chat;
 import edu.java.service.LinkService;
 import edu.java.service.LinkUpdater;
-import edu.java.utils.GithubLinkParser;
-import edu.java.utils.StackoverflowLinkParser;
+import edu.java.utils.GithubLinkHandler;
+import edu.java.utils.StackoverflowLinkHandler;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.function.Consumer;
@@ -36,11 +36,11 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "#{@'app-edu.java.configuration.ApplicationConfig'.scheduler.interval}")
     public void update() {
-        log.debug("i'm updating ...");
         linkUpdater.getLinksToCheck().forEach(link -> {
+            log.debug("i'm updating ...");
             switch (link.type()) {
                 case 1 -> {
-                    Pair<String, String> info = GithubLinkParser.parse(link.link());
+                    Pair<String, String> info = GithubLinkHandler.parse(link.link());
                     if (info != null) {
                         gitHubClient.getRepoInfo(info.getKey(), info.getValue()).subscribe(
                             githubOnSuccess(link.link()),
@@ -49,7 +49,7 @@ public class LinkUpdaterScheduler {
                     }
                 }
                 case 0 -> {
-                    Long id = StackoverflowLinkParser.parse(link.link());
+                    Long id = StackoverflowLinkHandler.parse(link.link());
                     if (id != null) {
                         stackOverflowClient.getQuestionInfo(id).subscribe(
                             stackoverflowOnSuccess(link.link()),
@@ -70,38 +70,51 @@ public class LinkUpdaterScheduler {
 
     private Consumer<RepoInfo> githubOnSuccess(String link) {
         return (info) -> {
-            log.debug("github link updated {} {}", link, info.updateDate);
+            log.debug("github link updated {}", link);
             if (linkUpdater.refreshUpdateDate(link, info.updateDate)) {
-                try {
-                    var request = new LinkUpdateRequest(
-                        0L,
-                        new URI(link),
-                        "updated github link",
-                        linkService.findChatsByLink(link).stream().map(Chat::chatId).collect(Collectors.toList())
-                    );
-                    botClient.update(request).subscribe();
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
+                buildRequestToBotClient(link, prepareDescriptionMessage(info, link));
             }
         };
     }
 
     private Consumer<QuestionInfo> stackoverflowOnSuccess(String link) {
         return (info) -> {
+            log.debug("stackoverflow link updated {}", link);
             if (linkUpdater.refreshUpdateDate(link, info.items.getFirst().lastActivityDate())) {
-                try {
-                    var request = new LinkUpdateRequest(
-                        0L,
-                        new URI(link),
-                        "updated stackoverflow link",
-                        linkService.findChatsByLink(link).stream().map(Chat::chatId).collect(Collectors.toList())
-                    );
-                    botClient.update(request).subscribe();
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
+                buildRequestToBotClient(link, prepareDescriptionMessage(info, link));
             }
         };
     }
+
+    private void buildRequestToBotClient(String link, String description) {
+        try {
+            var request = new LinkUpdateRequest(
+                0L,
+                new URI(link),
+                description,
+                linkService.findChatsByLink(link).stream().map(Chat::chatId).collect(Collectors.toList())
+            );
+            botClient.update(request).subscribe();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String prepareDescriptionMessage(RepoInfo info, String link) {
+        if (linkUpdater.refreshStarsCount(link, info.starsCount)) {
+            return String.format("Stars count has been changed on this repo %s\n"
+                + "Current number of stars: %d", link, info.starsCount);
+        }
+
+        return String.format("Github Link %s has been updated", link);
+    }
+
+    private String prepareDescriptionMessage(QuestionInfo info, String link) {
+        if (linkUpdater.refreshAnswersCount(link, info.items.getFirst().answerCount())) {
+            return String.format("Answers count has been changed on this question %s\n"
+                + "Current number of answers: %d", link, info.items.getFirst().answerCount());
+        }
+        return String.format("Stackoverflow Link %s has been updated", link);
+    }
+
 }

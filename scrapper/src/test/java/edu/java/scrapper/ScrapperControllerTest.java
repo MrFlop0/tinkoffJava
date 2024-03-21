@@ -6,8 +6,11 @@ import edu.java.controller.dto.Request.RemoveLinkRequest;
 import edu.java.controller.dto.Response.LinkResponse;
 import edu.java.controller.dto.Response.ListLinksResponse;
 import edu.java.domain.dto.Link;
+import edu.java.domain.dto.LinkInfo;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
+import edu.java.utils.GithubLinkHandler;
+import edu.java.utils.StackoverflowLinkHandler;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,12 +31,26 @@ public class ScrapperControllerTest {
     private LinkService linkService;
     @Mock
     private ChatService chatService;
+
+    @Mock
+    private GithubLinkHandler githubLinkHandler;
+
+    @Mock
+    private StackoverflowLinkHandler stackoverflowLinkParser;
+
     private ScrapperControllerImpl scrapperController;
+
+    private void setUpMocks() {
+        when(githubLinkHandler.getLinkInfo(eq("https://github.com/owner/repo")))
+            .thenReturn(new LinkInfo("https://github.com/owner/repo", 1, null, null));
+    }
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        scrapperController = new ScrapperControllerImpl(linkService, chatService);
+        setUpMocks();
+        scrapperController =
+            new ScrapperControllerImpl(linkService, chatService, githubLinkHandler, stackoverflowLinkParser);
     }
 
     @Test
@@ -53,7 +71,7 @@ public class ScrapperControllerTest {
     void getLinks() throws URISyntaxException {
         long chatId = 1L;
         scrapperController.getLinks(chatId);
-        Link test = new Link("http://github.com", 1, OffsetDateTime.now(), OffsetDateTime.now());
+        Link test = new Link("http://github.com", 1, null, null, OffsetDateTime.now(), OffsetDateTime.now());
         when(linkService.findLinksByChat(chatId)).thenReturn(List.of(test));
         verify(linkService, times(1)).findLinksByChat(chatId);
         assertThat(scrapperController.getLinks(chatId).getBody())
@@ -68,7 +86,7 @@ public class ScrapperControllerTest {
         long chatId = 1L;
         URI link = URI.create("https://github.com/owner/repo");
         scrapperController.addLink(chatId, new AddLinkRequest(link));
-        verify(linkService, times(1)).add(chatId, link.toString(), 1);
+        verify(linkService, times(1)).add(chatId, new LinkInfo(link.toString(), 1, null, null));
     }
 
     @Test

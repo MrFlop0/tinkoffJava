@@ -1,12 +1,13 @@
-package edu.java.scrapper.repos;
+package edu.java.scrapper.repos.jdbc;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Chat;
 import edu.java.domain.dto.Link;
 import edu.java.domain.dto.LinkChat;
-import edu.java.domain.repository.ChatRepository;
-import edu.java.domain.repository.LinkRepository;
-import edu.java.domain.repository.LinkToChatRepository;
+import edu.java.domain.dto.LinkInfo;
+import edu.java.domain.repository.jdbc.JdbcChatRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkToChatRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -19,20 +20,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    LinkRepository.class,
-    ChatRepository.class,
-    LinkToChatRepository.class
+    JdbcLinkRepository.class,
+    JdbcChatRepository.class,
+    JdbcLinkToChatRepository.class
 })
-public class LinkToChatRepositoryTest {
+public class JdbcLinkToChatRepositoryTest {
 
     @Autowired
-    private LinkToChatRepository linkToChatRepository;
+    private JdbcLinkToChatRepository linkToChatRepository;
 
     @Autowired
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
 
     @Autowired
-    private ChatRepository chatRepository;
+    private JdbcChatRepository chatRepository;
 
     @Test
     @Transactional
@@ -40,7 +41,7 @@ public class LinkToChatRepositoryTest {
     public void addTest() {
         chatRepository.add(0L);
         chatRepository.add(1L);
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
 
@@ -49,13 +50,12 @@ public class LinkToChatRepositoryTest {
         assertThat(mapping.size()).isEqualTo(2);
     }
 
-
     @Test
     @Transactional
     @Rollback
     public void deleteTest() {
         chatRepository.add(1L);
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkToChatRepository.add("test", 1L);
 
         linkToChatRepository.delete("test", 1L);
@@ -73,10 +73,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test1", 1L);
         linkToChatRepository.add("test2", 2L);
@@ -95,10 +95,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
@@ -109,7 +109,7 @@ public class LinkToChatRepositoryTest {
         linkToChatRepository.add("test3", 0L);
         linkToChatRepository.add("test3", 2L);
 
-        List<Chat> test  = linkToChatRepository.findChatsByLink("test");
+        List<Chat> test = linkToChatRepository.findChatsByLink("test");
         List<Chat> test1 = linkToChatRepository.findChatsByLink("test1");
         List<Chat> test2 = linkToChatRepository.findChatsByLink("test2");
         List<Chat> test3 = linkToChatRepository.findChatsByLink("test3");
@@ -120,7 +120,6 @@ public class LinkToChatRepositoryTest {
         assertThat(test3.stream().map(Chat::chatId)).isEqualTo(List.of(0L, 2L));
     }
 
-
     @Test
     @Transactional
     @Rollback
@@ -129,10 +128,10 @@ public class LinkToChatRepositoryTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
         chatRepository.add(3L);
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
-        linkRepository.add("test3", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
+        linkRepository.add(new LinkInfo("test3", 0, null, null));
 
         linkToChatRepository.add("test", 0L);
         linkToChatRepository.add("test", 1L);
@@ -153,6 +152,5 @@ public class LinkToChatRepositoryTest {
         assertThat(chat2.stream().map(Link::link)).isEqualTo(List.of("test1", "test3"));
         assertThat(chat3.stream().map(Link::link)).isEqualTo(List.of("test1", "test2"));
     }
-
 
 }

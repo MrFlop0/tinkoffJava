@@ -18,7 +18,7 @@ public class QuestionInfo {
         @JsonProperty("last_activity_date") OffsetDateTime lastActivityDate,
         @JsonProperty("question_id") Long questionId,
         @JsonProperty("is_answered") boolean isAnswered,
-        @JsonProperty("answer_count") Integer answerCount
+        @JsonProperty("answer_count") Long answerCount
     ) {
     }
 

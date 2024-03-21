@@ -1,8 +1,9 @@
-package edu.java.scrapper.repos;
+package edu.java.scrapper.repos.jdbc;
 
 import edu.java.configuration.DBConfig;
 import edu.java.domain.dto.Link;
-import edu.java.domain.repository.LinkRepository;
+import edu.java.domain.dto.LinkInfo;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,19 +16,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = {
     IntegrationTest.ManagerConfig.class,
     DBConfig.class,
-    LinkRepository.class
+    JdbcLinkRepository.class
 })
-public class LinkRepositoryTest {
+public class JdbcLinkRepositoryTest {
 
     @Autowired
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
 
     @Test
     @Transactional
     @Rollback
     public void addLink() {
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 1);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 1, null, null));
 
         List<Link> links = linkRepository.findAll();
 
@@ -45,7 +46,7 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void deleteLink() {
-        linkRepository.add("test", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
         linkRepository.delete("test");
 
         List<Link> links = linkRepository.findAll();
@@ -57,9 +58,9 @@ public class LinkRepositoryTest {
     @Transactional
     @Rollback
     public void findAllTest() {
-        linkRepository.add("test", 0);
-        linkRepository.add("test1", 0);
-        linkRepository.add("test2", 0);
+        linkRepository.add(new LinkInfo("test", 0, null, null));
+        linkRepository.add(new LinkInfo("test1", 0, null, null));
+        linkRepository.add(new LinkInfo("test2", 0, null, null));
 
         List<Link> links = linkRepository.findAll();
 

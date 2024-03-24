@@ -8,11 +8,8 @@ import edu.java.domain.repository.jdbc.JdbcLinkToChatRepository;
 import edu.java.service.LinkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 
-@Primary
-@Service
+
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 

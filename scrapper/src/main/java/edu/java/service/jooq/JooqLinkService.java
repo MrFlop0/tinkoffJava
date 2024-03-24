@@ -8,9 +8,8 @@ import edu.java.domain.repository.jooq.JooqLinkToChatRepository;
 import edu.java.service.LinkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+
 @RequiredArgsConstructor
 public class JooqLinkService implements LinkService {
 

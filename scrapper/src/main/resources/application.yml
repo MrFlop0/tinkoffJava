@@ -1,4 +1,5 @@
 app:
+  database: jdbc
   urls:
     gitHub: https://api.github.com
     stackOverflow: https://api.stackexchange.com/2.3
@@ -11,6 +12,10 @@ app:
 spring:
   application:
     name: scrapper
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
 
 server:
   port: 8080

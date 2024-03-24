@@ -29,7 +29,6 @@ import org.springframework.boot.autoconfigure.jooq.JooqExceptionTranslator;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -107,7 +106,7 @@ public abstract class IntegrationTest {
         }
     }
 
-    @Configuration
+    @TestConfiguration
     public static class JpaConfig {
         private static final String URL = "jdbc:postgresql://localhost:5432/scrapper";
         private static final String POSTGRES = "postgres";
@@ -121,12 +120,12 @@ public abstract class IntegrationTest {
         private static final String ANSWER_COUNT = "answers_count";
 
         @Bean
-        public DataSource dataSource() {
+        public DataSource testDataSource() {
             return DataSourceBuilder.create()
-                .driverClassName("org.postgresql.Driver")
-                .url(URL)
-                .username(POSTGRES)
-                .password(POSTGRES)
+                .driverClassName(IntegrationTest.POSTGRES.getDriverClassName())
+                .url(IntegrationTest.POSTGRES.getJdbcUrl())
+                .password(IntegrationTest.POSTGRES.getPassword())
+                .username(IntegrationTest.POSTGRES.getUsername())
                 .build();
         }
 
